@@ -61,7 +61,7 @@ python app.py
 Auth_BoilerPoint/
 ├── app.py              # All the routes (register, login, dashboard, logout)
 ├── db.py               # Database connection function
-├── templets/
+├── templates/
 │   ├── register.html
 │   ├── login.html
 │   └── dashboard.html
