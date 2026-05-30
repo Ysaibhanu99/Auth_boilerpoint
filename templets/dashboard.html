@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2 id="welcome-heading">Welcome</h2>
+        <p id="email-display">You are logged in</p>
+
+        <div id="flash-messages"></div>
+
+        <a href="/logout"><button>Logout</button></a>
+    </div>
+
+    <script>
+    (function() {
+        // Jinja2 injects real values when served by Flask.
+        // When opened as a file, these stay as literal template strings
+        // and the indexOf check prevents updating the page.
+        var username = '{{ username }}';
+        var email = '{{ email }}';
+
+        if (username.indexOf('{{ "{{" }}') === -1) {
+            document.getElementById('welcome-heading').textContent = 'Welcome, ' + username;
+            document.getElementById('email-display').innerHTML = 'You are logged in as <strong>' + email + '</strong>';
+        }
+
+        var msgs = [
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% for category, message in messages %}
+            { cat: "{{ category }}", msg: "{{ message }}" },
+            {% endfor %}
+            {% endwith %}
+        ];
+        var container = document.getElementById('flash-messages');
+        msgs.forEach(function(m) {
+            var p = document.createElement('p');
+            p.className = 'flash ' + m.cat;
+            p.textContent = m.msg;
+            container.appendChild(p);
+        });
+    })();
+    </script>
+</body>
+
+</html>
